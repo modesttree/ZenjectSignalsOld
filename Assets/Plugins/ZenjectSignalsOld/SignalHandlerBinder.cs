@@ -34,9 +34,8 @@ namespace Zenject
             _container.Bind(typeof(IInitializable), typeof(IDisposable)).To<StaticMethodWithInstanceSignalHandler<THandler>>().AsCached()
                 .WithArguments(method, new InjectContext(_container, typeof(THandler), lookupId), new BindingId(_signalType, Identifier));
 
-            var info = new BindInfo();
             return new SignalFromBinder<THandler>(
-                info, _container.Bind<THandler>(info).WithId(lookupId).To<THandler>());
+                _container.Bind<THandler>().WithId(lookupId).To<THandler>());
         }
 
         public SignalFromBinder<THandler> To<THandler>(Func<THandler, Action> methodGetter)
@@ -49,9 +48,8 @@ namespace Zenject
             _container.Bind(typeof(IInitializable), typeof(IDisposable)).To<InstanceMethodSignalHandler<THandler>>().AsCached()
                 .WithArguments(methodGetter, new InjectContext(_container, typeof(THandler), lookupId), new BindingId(_signalType, Identifier));
 
-            var info = new BindInfo();
             return new SignalFromBinder<THandler>(
-                info, _container.Bind<THandler>(info).WithId(lookupId).To<THandler>());
+                _container.Bind<THandler>().WithId(lookupId).To<THandler>());
         }
 
         public void To(Action method)
@@ -109,9 +107,8 @@ namespace Zenject
             _container.Bind(typeof(IInitializable), typeof(IDisposable)).To<StaticMethodWithInstanceSignalHandler<TParam1, THandler>>().AsCached()
                 .WithArguments(method, new InjectContext(_container, typeof(THandler), lookupId), new BindingId(_signalType, Identifier));
 
-            var info = new BindInfo();
             return new SignalFromBinder<THandler>(
-                info, _container.Bind<THandler>(info).WithId(lookupId).To<THandler>());
+                _container.Bind<THandler>().WithId(lookupId).To<THandler>());
         }
 
         public SignalFromBinder<THandler> To<THandler>(Func<THandler, Action<TParam1>> methodGetter)
@@ -124,9 +121,8 @@ namespace Zenject
             _container.Bind(typeof(IInitializable), typeof(IDisposable)).To<InstanceMethodSignalHandler<TParam1, THandler>>().AsCached()
                 .WithArguments(methodGetter, new InjectContext(_container, typeof(THandler), lookupId), new BindingId(_signalType, Identifier));
 
-            var info = new BindInfo();
             return new SignalFromBinder<THandler>(
-                info, _container.Bind<THandler>(info).WithId(lookupId).To<THandler>());
+                _container.Bind<THandler>().WithId(lookupId).To<THandler>());
         }
 
         public void To(Action<TParam1> method)
@@ -184,9 +180,8 @@ namespace Zenject
             _container.Bind(typeof(IInitializable), typeof(IDisposable)).To<StaticMethodWithInstanceSignalHandler<TParam1, TParam2, THandler>>().AsCached()
                 .WithArguments(method, new InjectContext(_container, typeof(THandler), lookupId), new BindingId(_signalType, Identifier));
 
-            var info = new BindInfo();
             return new SignalFromBinder<THandler>(
-                info, _container.Bind<THandler>(info).WithId(lookupId).To<THandler>());
+                _container.Bind<THandler>().WithId(lookupId).To<THandler>());
         }
 
         public SignalFromBinder<THandler> To<THandler>(Func<THandler, Action<TParam1, TParam2>> methodGetter)
@@ -199,9 +194,8 @@ namespace Zenject
             _container.Bind(typeof(IInitializable), typeof(IDisposable)).To<InstanceMethodSignalHandler<TParam1, TParam2, THandler>>().AsCached()
                 .WithArguments(methodGetter, new InjectContext(_container, typeof(THandler), lookupId), new BindingId(_signalType, Identifier));
 
-            var info = new BindInfo();
             return new SignalFromBinder<THandler>(
-                info, _container.Bind<THandler>(info).WithId(lookupId).To<THandler>());
+                _container.Bind<THandler>().WithId(lookupId).To<THandler>());
         }
 
         public void To(Action<TParam1, TParam2> method)
@@ -259,9 +253,8 @@ namespace Zenject
             _container.Bind(typeof(IInitializable), typeof(IDisposable)).To<StaticMethodWithInstanceSignalHandler<TParam1, TParam2, TParam3, THandler>>().AsCached()
                 .WithArguments(method, new InjectContext(_container, typeof(THandler), lookupId), new BindingId(_signalType, Identifier));
 
-            var info = new BindInfo();
             return new SignalFromBinder<THandler>(
-                info, _container.Bind<THandler>(info).WithId(lookupId).To<THandler>());
+                _container.Bind<THandler>().WithId(lookupId).To<THandler>());
         }
 
         public SignalFromBinder<THandler> To<THandler>(Func<THandler, Action<TParam1, TParam2, TParam3>> methodGetter)
@@ -274,9 +267,8 @@ namespace Zenject
             _container.Bind(typeof(IInitializable), typeof(IDisposable)).To<InstanceMethodSignalHandler<TParam1, TParam2, TParam3, THandler>>().AsCached()
                 .WithArguments(methodGetter, new InjectContext(_container, typeof(THandler), lookupId), new BindingId(_signalType, Identifier));
 
-            var info = new BindInfo();
             return new SignalFromBinder<THandler>(
-                info, _container.Bind<THandler>(info).WithId(lookupId).To<THandler>());
+                _container.Bind<THandler>().WithId(lookupId).To<THandler>());
         }
 
         public void To(Action<TParam1, TParam2, TParam3> method)
@@ -334,9 +326,8 @@ namespace Zenject
             _container.Bind(typeof(IInitializable), typeof(IDisposable)).To<StaticMethodWithInstanceSignalHandler<TParam1, TParam2, TParam3, TParam4, THandler>>().AsCached()
                 .WithArguments(method, new InjectContext(_container, typeof(THandler), lookupId), new BindingId(_signalType, Identifier));
 
-            var info = new BindInfo();
             return new SignalFromBinder<THandler>(
-                info, _container.Bind<THandler>(info).WithId(lookupId).To<THandler>());
+                _container.Bind<THandler>().WithId(lookupId).To<THandler>());
         }
 
         public SignalFromBinder<THandler> To<THandler>(Func<THandler, Action<TParam1, TParam2, TParam3, TParam4>> methodGetter)
@@ -349,9 +340,8 @@ namespace Zenject
             _container.Bind(typeof(IInitializable), typeof(IDisposable)).To<InstanceMethodSignalHandler<TParam1, TParam2, TParam3, TParam4, THandler>>().AsCached()
                 .WithArguments(methodGetter, new InjectContext(_container, typeof(THandler), lookupId), new BindingId(_signalType, Identifier));
 
-            var info = new BindInfo();
             return new SignalFromBinder<THandler>(
-                info, _container.Bind<THandler>(info).WithId(lookupId).To<THandler>());
+                _container.Bind<THandler>().WithId(lookupId).To<THandler>());
         }
 
         public void To(Action<TParam1, TParam2, TParam3, TParam4> method)

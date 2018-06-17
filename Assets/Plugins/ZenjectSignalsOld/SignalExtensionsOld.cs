@@ -9,10 +9,10 @@ namespace Zenject
         public static SignalBinderWithId DeclareSignalOld<T>(this DiContainer container)
             where T : ISignalBase
         {
-            var info = new BindInfo();
             var signalSettings = new SignalSettingsOld();
-            container.Bind<T>(info).AsCached().WithArguments(signalSettings, info);
-            return new SignalBinderWithId(info, signalSettings);
+            var binder = container.Bind<T>().AsCached();
+            binder.WithArguments(signalSettings, binder.BindInfo);
+            return new SignalBinderWithId(binder.BindInfo, signalSettings);
         }
 
         public static SignalBinderWithId DeclareSignalOld(this DiContainer container, Type type)

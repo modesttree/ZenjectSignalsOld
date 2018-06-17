@@ -9,16 +9,12 @@ namespace Zenject
     // you are working in
     //
     // You might also want to use this installer in a ZenjectUnitTestFixture
-    public class StandardInterfacesRootInstaller : Installer<StandardInterfacesRootInstaller>
+    public class ZenjectManagersInstaller : Installer<ZenjectManagersInstaller>
     {
         public override void InstallBindings()
         {
             Container.Bind(typeof(TickableManager), typeof(InitializableManager), typeof(DisposableManager))
                 .ToSelf().AsSingle().CopyIntoAllSubContainers();
-
-#if ZEN_SIGNALS_ADD_UNIRX
-            Container.BindInterfacesAndSelfTo<ZenjectStreams>().AsSingle().CopyIntoAllSubContainers();
-#endif
         }
     }
 }

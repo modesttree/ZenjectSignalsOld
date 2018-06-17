@@ -96,12 +96,8 @@ namespace Zenject
             // conflict with anything else
             factoryId = Guid.NewGuid();
 
-            return BindContainer.Bind<T>(
-                new BindInfo(),
-                // Very important here that we call StartBinding with false otherwise our placeholder
-                // factory binding will be finalized early
-                BindContainer.StartBinding(null, false))
-                .WithId(factoryId);
+            // Very important here that we use NoFlush otherwise the main binding will be finalized early
+            return BindContainer.BindNoFlush<T>().WithId(factoryId);
         }
 
 #if !NOT_UNITY3D

@@ -20,6 +20,11 @@ namespace Zenject
             get; set;
         }
 
+        public int TickPriority
+        {
+            get; set;
+        }
+
         public SignalMissingHandlerResponses MissingHandlerResponse
         {
             get; set;

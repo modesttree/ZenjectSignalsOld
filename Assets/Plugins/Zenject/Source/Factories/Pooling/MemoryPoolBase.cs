@@ -120,7 +120,7 @@ namespace Zenject
 
             _inactiveItems.Push(item);
 
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
             using (ProfileBlock.Start("{0}.OnDespawned", this.GetType()))
 #endif
             {

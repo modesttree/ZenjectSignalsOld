@@ -53,6 +53,17 @@ namespace Zenject
                 new DisposableInfo(disposable, priority));
         }
 
+        public void AddLate(ILateDisposable disposable)
+        {
+            AddLate(disposable, 0);
+        }
+
+        public void AddLate(ILateDisposable disposable, int priority)
+        {
+            _lateDisposables.Add(
+                new LateDisposableInfo(disposable, priority));
+        }
+
         public void Remove(IDisposable disposable)
         {
             _disposables.RemoveWithConfirm(

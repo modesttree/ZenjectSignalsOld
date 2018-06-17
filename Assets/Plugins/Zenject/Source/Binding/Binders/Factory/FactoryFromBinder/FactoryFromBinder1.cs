@@ -54,27 +54,16 @@ namespace Zenject
                 BindContainer, BindInfo, FactoryBindInfo, subIdentifier);
         }
 
-#if !NOT_UNITY3D
-        public ArgConditionCopyNonLazyBinder FromMonoPoolableMemoryPool<TContractAgain>(
-            Action<MemoryPoolInitialSizeMaxSizeBinder<TContractAgain>> poolBindGenerator)
-            // Unfortunately we have to pass the same contract in again to satisfy the generic
-            // constraints below
-            where TContractAgain : Component, IPoolable<TParam1, IMemoryPool>
-        {
-            return FromPoolableMemoryPoolInternal<TContractAgain, MonoPoolableMemoryPool<TParam1, IMemoryPool, TContractAgain>>(poolBindGenerator);
-        }
-#endif
-
         public ArgConditionCopyNonLazyBinder FromPoolableMemoryPool<TContractAgain>(
             Action<MemoryPoolInitialSizeMaxSizeBinder<TContractAgain>> poolBindGenerator)
             // Unfortunately we have to pass the same contract in again to satisfy the generic
             // constraints below
             where TContractAgain : IPoolable<TParam1, IMemoryPool>
         {
-            return FromPoolableMemoryPoolInternal<TContractAgain, PoolableMemoryPool<TParam1, IMemoryPool, TContractAgain>>(poolBindGenerator);
+            return FromPoolableMemoryPool<TContractAgain, PoolableMemoryPool<TParam1, IMemoryPool, TContractAgain>>(poolBindGenerator);
         }
 
-        ArgConditionCopyNonLazyBinder FromPoolableMemoryPoolInternal<TContractAgain, TMemoryPool>(
+        public ArgConditionCopyNonLazyBinder FromPoolableMemoryPool<TContractAgain, TMemoryPool>(
             Action<MemoryPoolInitialSizeMaxSizeBinder<TContractAgain>> poolBindGenerator)
             // Unfortunately we have to pass the same contract in again to satisfy the generic
             // constraints below
@@ -87,12 +76,8 @@ namespace Zenject
             // conflict with anything else
             var poolId = Guid.NewGuid();
 
-            var binder = BindContainer.BindMemoryPoolCustomInterface<TContractAgain, TMemoryPool, TMemoryPool>(
-                false,
-                // Very important here that we call StartBinding with false otherwise the other
-                // binding will be finalized early
-                BindContainer.StartBinding(null, false))
-                .WithId(poolId);
+            // Important to use NoFlush otherwise the binding will be finalized early
+            var binder = BindContainer.BindMemoryPoolCustomInterfaceNoFlush<TContractAgain, TMemoryPool, TMemoryPool>().WithId(poolId);
 
             // Always make it non lazy by default in case the user sets an InitialSize
             binder.NonLazy();

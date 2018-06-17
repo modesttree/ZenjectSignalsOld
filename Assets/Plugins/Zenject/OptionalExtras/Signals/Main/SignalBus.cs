@@ -9,8 +9,9 @@ using UniRx;
 
 namespace Zenject
 {
-    public class SignalBus : ILateDisposable, ITickable
+    public class SignalBus : ILateDisposable
     {
+        readonly SignalSubscription.Pool _subscriptionPool;
         readonly Dictionary<Type, SignalDeclaration> _localDeclarationMap;
         readonly List<SignalDeclaration> _localDeclarations;
         readonly SignalBus _parentBus;
@@ -19,37 +20,20 @@ namespace Zenject
 
         public SignalBus(
             [Inject(Source = InjectSources.Local)]
-            List<SignalDeclarationBindInfo> signalBindings,
+            List<SignalDeclaration> signalDeclarations,
             [Inject(Source = InjectSources.Parent, Optional = true)]
             SignalBus parentBus,
             [InjectOptional]
-            ZenjectSettings zenjectSettings)
+            ZenjectSettings zenjectSettings,
+            SignalSubscription.Pool subscriptionPool)
         {
-            if (zenjectSettings != null && zenjectSettings.Signals != null)
-            {
-                _settings = zenjectSettings.Signals;
-            }
-            else
-            {
-                _settings = ZenjectSettings.SignalSettings.Default;
-            }
+            _subscriptionPool = subscriptionPool;
+            zenjectSettings = zenjectSettings ?? ZenjectSettings.Default;
+            _settings = zenjectSettings.Signals ?? ZenjectSettings.SignalSettings.Default;
 
-            _localDeclarations = new List<SignalDeclaration>();
-            _localDeclarationMap = new Dictionary<Type, SignalDeclaration>();
+            _localDeclarations = signalDeclarations;
+            _localDeclarationMap = signalDeclarations.ToDictionary(x => x.SignalType, x => x);
             _parentBus = parentBus;
-
-            for (int i = 0; i < signalBindings.Count; i++)
-            {
-                var signalBindInfo = signalBindings[i];
-
-                var declaration = SignalDeclaration.Pool.Spawn(
-                    signalBindInfo.SignalType,
-                    signalBindInfo.MissingHandlerResponse,
-                    signalBindInfo.RunAsync, _settings);
-
-                _localDeclarations.Add(declaration);
-                _localDeclarationMap.Add(signalBindInfo.SignalType, declaration);
-            }
         }
 
         public int NumSubscribers
@@ -59,20 +43,20 @@ namespace Zenject
 
         public void LateDispose()
         {
-            if (_settings.AutoUnsubscribeInDispose)
-            {
-                foreach (var subscription in _subscriptionMap.Values)
-                {
-                    subscription.Dispose();
-                }
-            }
-            else
+            if (_settings.RequireStrictUnsubscribe)
             {
                 if (!_subscriptionMap.IsEmpty())
                 {
                     throw Assert.CreateException(
                         "Found subscriptions for signals '{0}' in SignalBus.LateDispose!  Either add the explicit Unsubscribe or set SignalSettings.AutoUnsubscribeInDispose to true",
                         _subscriptionMap.Values.Select(x => x.SignalType.PrettyName()).Join(", "));
+                }
+            }
+            else
+            {
+                foreach (var subscription in _subscriptionMap.Values)
+                {
+                    subscription.Dispose();
                 }
             }
 
@@ -82,17 +66,13 @@ namespace Zenject
             }
         }
 
-        public void Tick()
-        {
-            for (int i = 0; i < _localDeclarations.Count; i++)
-            {
-                _localDeclarations[i].Update();
-            }
-        }
-
         public void Fire<TSignal>()
         {
-            Fire((TSignal)Activator.CreateInstance(typeof(TSignal)));
+            // Do this before creating the signal so that it throws if the signal was not declared
+            var declaration = GetDeclaration(typeof(TSignal));
+
+            declaration.Fire(
+                (TSignal)Activator.CreateInstance(typeof(TSignal)));
         }
 
         public void Fire(object signal)
@@ -206,7 +186,7 @@ namespace Zenject
                 "Tried subscribing to the same signal with the same callback on Zenject.SignalBus");
 
             var declaration = GetDeclaration(id.SignalType);
-            var subscription = SignalSubscription.Pool.Spawn(callback, declaration);
+            var subscription = _subscriptionPool.Spawn(callback, declaration);
 
             _subscriptionMap.Add(id, subscription);
         }

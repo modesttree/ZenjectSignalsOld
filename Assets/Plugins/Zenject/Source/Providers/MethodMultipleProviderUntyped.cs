@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
 using ModestTree;
+using System.Linq;
+using ModestTree.Util;
 
 namespace Zenject
 {
-    public class MethodProviderUntyped : IProvider
+    public class MethodMultipleProviderUntyped : IProvider
     {
         readonly DiContainer _container;
-        readonly Func<InjectContext, object> _method;
+        readonly Func<InjectContext, IEnumerable<object>> _method;
 
-        public MethodProviderUntyped(
-            Func<InjectContext, object> method,
+        public MethodMultipleProviderUntyped(
+            Func<InjectContext, IEnumerable<object>> method,
             DiContainer container)
         {
             _container = container;
@@ -49,15 +51,12 @@ namespace Zenject
 
                 if (result == null)
                 {
-                    Assert.That(!context.MemberType.IsPrimitive(),
-                        "Invalid value returned from FromMethod.  Expected non-null.");
-                }
-                else
-                {
-                    Assert.That(result.GetType().DerivesFromOrEqual(context.MemberType));
+                    throw Assert.CreateException(
+                        "Method '{0}' returned null when list was expected. Object graph:\n {1}",
+                        _method.ToDebugString(), context.GetObjectGraphString());
                 }
 
-                return new List<object>() { result };
+                return result.ToList();
             }
         }
     }

@@ -59,7 +59,7 @@ namespace Zenject
                 return false;
             }
 
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
             using (ProfileBlock.Start("Signal '{0}'", signalType))
 #endif
             {

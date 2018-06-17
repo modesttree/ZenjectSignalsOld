@@ -76,7 +76,7 @@ namespace Zenject
 
         public static ZenjectTypeInfo GetInfo(Type type)
         {
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
             using (ProfileBlock.Start("Zenject Reflection"))
 #endif
             {

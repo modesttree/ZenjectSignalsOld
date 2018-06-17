@@ -150,13 +150,8 @@ namespace Zenject
             // conflict with anything else
             var factoryId = Guid.NewGuid();
 
-            var subBindInfo = new BindInfo();
-
-            var subBinder = BindContainer.Bind<IFactory<TContract>>(
-                subBindInfo,
-                // Very important here that we call StartBinding with false otherwise our placeholder
-                // factory binding will be finalized early
-                BindContainer.StartBinding(null, false))
+            // Important to use NoFlush here otherwise the main binding will finalize early
+            var subBinder = BindContainer.BindNoFlush<IFactory<TContract>>()
                 .WithId(factoryId);
 
             factoryBindGenerator(subBinder);
@@ -173,7 +168,7 @@ namespace Zenject
 
             var binder = new ScopeConcreteIdArgConditionCopyNonLazyBinder(BindInfo);
             // Needed for example if the user uses MoveIntoDirectSubContainers
-            binder.SecondaryCopyBindInfo = subBindInfo;
+            binder.AddSecondaryCopyBindInfo(subBinder.BindInfo);
             return binder;
         }
 
@@ -427,6 +422,18 @@ namespace Zenject
             SubFinalizer = new ScopableBindingFinalizer(
                 BindInfo,
                 (container, type) => new MethodProviderUntyped(method, container));
+
+            return this;
+        }
+
+        public ScopeConcreteIdArgConditionCopyNonLazyBinder FromMethodMultipleUntyped(Func<InjectContext, IEnumerable<object>> method)
+        {
+            BindInfo.RequireExplicitScope = false;
+            // Don't know how it's created so can't assume here that it violates AsSingle
+            BindInfo.MarkAsCreationBinding = false;
+            SubFinalizer = new ScopableBindingFinalizer(
+                BindInfo,
+                (container, type) => new MethodMultipleProviderUntyped(method, container));
 
             return this;
         }

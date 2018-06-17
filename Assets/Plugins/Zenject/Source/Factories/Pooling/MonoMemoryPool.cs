@@ -13,6 +13,11 @@ namespace Zenject
     {
         Transform _originalParent;
 
+        [Inject]
+        public MonoMemoryPool()
+        {
+        }
+
         protected override void OnCreated(TValue item)
         {
             item.gameObject.SetActive(false);
@@ -48,6 +53,11 @@ namespace Zenject
         where TValue : Component
     {
         Transform _originalParent;
+
+        [Inject]
+        public MonoMemoryPool()
+        {
+        }
 
         protected override void OnCreated(TValue item)
         {
@@ -86,6 +96,11 @@ namespace Zenject
     {
         Transform _originalParent;
 
+        [Inject]
+        public MonoMemoryPool()
+        {
+        }
+
         protected override void OnCreated(TValue item)
         {
             item.gameObject.SetActive(false);
@@ -122,6 +137,11 @@ namespace Zenject
         where TValue : Component
     {
         Transform _originalParent;
+
+        [Inject]
+        public MonoMemoryPool()
+        {
+        }
 
         protected override void OnCreated(TValue item)
         {
@@ -160,6 +180,11 @@ namespace Zenject
     {
         Transform _originalParent;
 
+        [Inject]
+        public MonoMemoryPool()
+        {
+        }
+
         protected override void OnCreated(TValue item)
         {
             item.gameObject.SetActive(false);
@@ -196,6 +221,11 @@ namespace Zenject
         where TValue : Component
     {
         Transform _originalParent;
+
+        [Inject]
+        public MonoMemoryPool()
+        {
+        }
 
         protected override void OnCreated(TValue item)
         {

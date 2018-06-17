@@ -28,7 +28,7 @@ namespace Zenject
         static ProjectContext _instance;
 
         [SerializeField]
-        ZenjectSettings _settings;
+        ZenjectSettings _settings = null;
 
         DiContainer _container;
 
@@ -231,7 +231,7 @@ namespace Zenject
 
             _container.Bind<ZenjectSceneLoader>().AsSingle();
 
-            StandardInterfacesRootInstaller.Install(_container);
+            ZenjectManagersInstaller.Install(_container);
 
             _container.Bind<Context>().FromInstance(this);
 

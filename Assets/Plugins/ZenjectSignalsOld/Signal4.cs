@@ -79,7 +79,7 @@ namespace Zenject
 
         public void Fire(TParam1 p1, TParam2 p2, TParam3 p3, TParam4 p4)
         {
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
             using (ProfileBlock.Start("Signal '{0}'", this.GetType().Name))
 #endif
             {
@@ -101,7 +101,7 @@ namespace Zenject
                 {
                     var listener = _tempListeners[i];
 
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
                     using (ProfileBlock.Start(listener.ToDebugString()))
 #endif
                     {
@@ -111,7 +111,7 @@ namespace Zenject
 
 #if ZEN_SIGNALS_ADD_UNIRX
                 wasHandled |= _observable.HasObservers;
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
                 using (ProfileBlock.Start("UniRx Stream"))
 #endif
                 {

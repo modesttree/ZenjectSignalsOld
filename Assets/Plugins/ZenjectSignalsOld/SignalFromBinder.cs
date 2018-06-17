@@ -11,14 +11,12 @@ namespace Zenject
     // like CopyInSubContainers, conditions, subcontainers
     public class SignalFromBinder<TContract> : ScopeConcreteIdArgNonLazyBinder
     {
-        readonly BindInfo _info;
         readonly FromBinderGeneric<TContract> _subBinder;
 
         public SignalFromBinder(
-            BindInfo info, FromBinderGeneric<TContract> subBinder)
-            : base(info)
+            FromBinderGeneric<TContract> subBinder)
+            : base(subBinder.BindInfo)
         {
-            _info = info;
             _subBinder = subBinder;
         }
 
@@ -40,19 +38,19 @@ namespace Zenject
         public ScopeNonLazyBinder FromResolveGetter<TObj>(Func<TObj, TContract> method)
         {
             _subBinder.FromResolveGetter<TObj>(method);
-            return new ScopeNonLazyBinder(_info);
+            return new ScopeNonLazyBinder(BindInfo);
         }
 
         public ScopeNonLazyBinder FromResolveGetter<TObj>(object identifier, Func<TObj, TContract> method)
         {
             _subBinder.FromResolveGetter<TObj>(identifier, method);
-            return new ScopeNonLazyBinder(_info);
+            return new ScopeNonLazyBinder(BindInfo);
         }
 
         public ScopeNonLazyBinder FromInstance(TContract instance)
         {
             _subBinder.FromInstance(instance);
-            return new ScopeNonLazyBinder(_info);
+            return new ScopeNonLazyBinder(BindInfo);
         }
 
 #if !NOT_UNITY3D
@@ -82,13 +80,13 @@ namespace Zenject
         public ScopeNonLazyBinder FromResolve()
         {
             _subBinder.FromResolve();
-            return new ScopeNonLazyBinder(_info);
+            return new ScopeNonLazyBinder(BindInfo);
         }
 
         public ScopeNonLazyBinder FromResolve(object subIdentifier)
         {
             _subBinder.FromResolve(subIdentifier);
-            return new ScopeNonLazyBinder(_info);
+            return new ScopeNonLazyBinder(BindInfo);
         }
 
         // TODO
@@ -110,35 +108,35 @@ namespace Zenject
         {
             var gameObjectInfo = new GameObjectCreationParameters();
             _subBinder.FromNewComponentOnNewPrefab(prefab, gameObjectInfo);
-            return new NameTransformScopeConcreteIdArgNonLazyBinder(_info, gameObjectInfo);
+            return new NameTransformScopeConcreteIdArgNonLazyBinder(BindInfo, gameObjectInfo);
         }
 
         public NameTransformScopeConcreteIdArgNonLazyBinder FromNewComponentOnNewPrefabResource(string resourcePath)
         {
             var gameObjectInfo = new GameObjectCreationParameters();
             _subBinder.FromNewComponentOnNewPrefabResource(resourcePath, gameObjectInfo);
-            return new NameTransformScopeConcreteIdArgNonLazyBinder(_info, gameObjectInfo);
+            return new NameTransformScopeConcreteIdArgNonLazyBinder(BindInfo, gameObjectInfo);
         }
 
         public NameTransformScopeConcreteIdArgNonLazyBinder FromNewComponentOnNewGameObject()
         {
             var gameObjectInfo = new GameObjectCreationParameters();
             _subBinder.FromNewComponentOnNewGameObject(gameObjectInfo);
-            return new NameTransformScopeConcreteIdArgNonLazyBinder(_info, gameObjectInfo);
+            return new NameTransformScopeConcreteIdArgNonLazyBinder(BindInfo, gameObjectInfo);
         }
 
         public NameTransformScopeConcreteIdArgNonLazyBinder FromComponentInNewPrefab(UnityEngine.Object prefab)
         {
             var gameObjectInfo = new GameObjectCreationParameters();
             _subBinder.FromComponentInNewPrefab(prefab, gameObjectInfo);
-            return new NameTransformScopeConcreteIdArgNonLazyBinder(_info, gameObjectInfo);
+            return new NameTransformScopeConcreteIdArgNonLazyBinder(BindInfo, gameObjectInfo);
         }
 
         public NameTransformScopeConcreteIdArgNonLazyBinder FromComponentInNewPrefabResource(string resourcePath)
         {
             var gameObjectInfo = new GameObjectCreationParameters();
             _subBinder.FromComponentInNewPrefabResource(resourcePath, gameObjectInfo);
-            return new NameTransformScopeConcreteIdArgNonLazyBinder(_info, gameObjectInfo);
+            return new NameTransformScopeConcreteIdArgNonLazyBinder(BindInfo, gameObjectInfo);
         }
 
         public ScopeConcreteIdArgNonLazyBinder FromNewScriptableObjectResource(string resourcePath)
@@ -156,7 +154,7 @@ namespace Zenject
         public ScopeNonLazyBinder FromResource(string resourcePath)
         {
             _subBinder.FromResource(resourcePath);
-            return new ScopeNonLazyBinder(_info);
+            return new ScopeNonLazyBinder(BindInfo);
         }
 
 #endif

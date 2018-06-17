@@ -4,6 +4,8 @@ using UnityEngine;
 using Zenject;
 using ModestTree;
 
+#pragma warning disable 219
+
 namespace Zenject
 {
     public class CheatSheet : Installer<CheatSheet>
@@ -184,13 +186,13 @@ namespace Zenject
         public class Norf
         {
             [Inject(Id = "FooA")]
-            string _foo;
+            public string Foo;
         }
 
         public class Qux
         {
             [Inject(Id = "FooB")]
-            string _foo;
+            public string Foo;
         }
 
         public void InstallMore2()
@@ -215,7 +217,7 @@ namespace Zenject
         public class Norf2
         {
             [Inject]
-            Foo _foo;
+            public Foo Foo;
         }
 
         // Qux2._foo will be the same instance as Norf2._foo
@@ -223,10 +225,10 @@ namespace Zenject
         public class Qux2
         {
             [Inject]
-            Foo _foo;
+            public Foo Foo;
 
             [Inject(Id = "FooA")]
-            Foo _foo2;
+            public Foo Foo2;
         }
 
         public void InstallMore3()
@@ -282,8 +284,8 @@ namespace Zenject
             Container.Bind<Bar>().WithId("Bar2").AsCached();
 
             // Here we use the 'ParentContexts' property of inject context to sync multiple corresponding identifiers
-            Container.BindInstance(foo1).When(c => c.ParentContexts.Where(x => x.MemberType == typeof(Bar) && x.Identifier == "Bar1").Any());
-            Container.BindInstance(foo2).When(c => c.ParentContexts.Where(x => x.MemberType == typeof(Bar) && x.Identifier == "Bar2").Any());
+            Container.BindInstance(foo1).When(c => c.ParentContexts.Where(x => x.MemberType == typeof(Bar) && object.Equals(x.Identifier, "Bar1")).Any());
+            Container.BindInstance(foo2).When(c => c.ParentContexts.Where(x => x.MemberType == typeof(Bar) && object.Equals(x.Identifier, "Bar2")).Any());
 
             // This results in:
             Assert.That(Container.ResolveId<Bar>("Bar1").Foo == foo1);
@@ -428,7 +430,10 @@ namespace Zenject
         {
             public Foo Foo
             {
-                get;
+                get
+                {
+                    return null;
+                }
             }
         }
     }

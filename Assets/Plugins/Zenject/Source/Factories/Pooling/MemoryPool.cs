@@ -13,7 +13,7 @@ namespace Zenject
 
             if (!Container.IsValidating)
             {
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
                 using (ProfileBlock.Start("{0}.Reinitialize", this.GetType()))
 #endif
                 {
@@ -44,7 +44,7 @@ namespace Zenject
 
             if (!Container.IsValidating)
             {
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
                 using (ProfileBlock.Start("{0}.Reinitialize", this.GetType()))
 #endif
                 {
@@ -76,7 +76,7 @@ namespace Zenject
 
             if (!Container.IsValidating)
             {
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
                 using (ProfileBlock.Start("{0}.Reinitialize", this.GetType()))
 #endif
                 {
@@ -108,7 +108,7 @@ namespace Zenject
 
             if (!Container.IsValidating)
             {
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
                 using (ProfileBlock.Start("{0}.Reinitialize", this.GetType()))
 #endif
                 {
@@ -139,7 +139,7 @@ namespace Zenject
 
             if (!Container.IsValidating)
             {
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
                 using (ProfileBlock.Start("{0}.Reinitialize", this.GetType()))
 #endif
                 {
@@ -170,7 +170,7 @@ namespace Zenject
             var item = GetInternal();
             if (!Container.IsValidating)
             {
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
                 using (ProfileBlock.Start("{0}.Reinitialize", this.GetType()))
 #endif
                 {
@@ -203,7 +203,7 @@ namespace Zenject
 
             if (!Container.IsValidating)
             {
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
                 using (ProfileBlock.Start("{0}.Reinitialize", this.GetType()))
 #endif
                 {
@@ -236,7 +236,7 @@ namespace Zenject
 
             if (!Container.IsValidating)
             {
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
                 using (ProfileBlock.Start("{0}.Reinitialize", this.GetType()))
 #endif
                 {
@@ -269,7 +269,7 @@ namespace Zenject
 
             if (!Container.IsValidating)
             {
-#if UNITY_EDITOR && ZEN_PROFILING_ENABLED
+#if UNITY_EDITOR
                 using (ProfileBlock.Start("{0}.Reinitialize", this.GetType()))
 #endif
                 {
